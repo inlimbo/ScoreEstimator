@@ -12,8 +12,6 @@ dataset_fp = "StudentsPerformance.csv"
 
 column_names = ['gender', 'race/ethnicity', 'parental_level_of_education', 'lunch', 'test_preparation_course', 'math_score', 'reading_score', 'writing_score']
 
-feature_names = column_names[:-1]
-label_name = column_names[-1]
 
 train_dataset_fp = pd.read_csv(dataset_fp, names = column_names, na_values = "?", comment ='\t',
                                     sep = ",", skipinitialspace = True)
