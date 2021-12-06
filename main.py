@@ -44,25 +44,29 @@ test_preparation_course = train_dataset_fp.pop('test_preparation_course')
 train_dataset_fp['none'] = (test_preparation_course == 'none')*1.0
 train_dataset_fp['completed'] = (test_preparation_course == 'completed')*1.0
 
+complete_train_dataset = train_dataset_fp
+
+train_dataset_fp.pop('math_score')
+train_dataset_fp.pop('reading_score')
+train_dataset_fp.pop('writing_score')
+
 train_dataset = train_dataset_fp.sample(frac=0.85)
 test_dataset = train_dataset_fp.drop(train_dataset.index)
 
 print(train_dataset_fp)
-train_labels = train_dataset.pop('writing_score')
+train_labels = train_dataset
 #train_labels = train_labels.pop('writing_score')
 #train_labels = train_labels.pop('reading_score')
-test_labels = test_dataset.pop('math_score')
+test_labels = test_dataset
 
 print(train_labels)
+print(train_dataset_fp)
 
 train_stats = train_dataset.describe()
-#train_stats.pop('math_score')
+#train_stats.pop("math_score")
 #train_stats.pop('writing_score')
 #train_stats.pop('reading_score')
 train_stats = train_stats.transpose()
-
-#feature_df = pd.DataFrame(feature_names)
-#feature_onehot = pd.get_dummies(feature_df)
 
 batch_size = 100
 EPOCHS = 100
@@ -90,7 +94,7 @@ normed_train_data = norm(train_dataset)
 history = model.fit(
     normed_train_data, train_labels,
     epochs = EPOCHS, validation_split = 0.15, verbose = 0,
-    callbacks=[printdot.PrintDot()]
+    callbacks = [printdot.PrintDot()]
 )
 hist = pd.DataFrame(history.history)
 hist['epoch'] = history.epoch
